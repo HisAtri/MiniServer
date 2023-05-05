@@ -6,6 +6,7 @@ import http.client
 import logging
 
 from def_global import get_first_path
+import config_global
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -35,7 +36,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 
 
 # 启动Web服务器
-PORT = 8080
+PORT = config_global.server["port"]
 Handler = MyHandler
 httpd = socketserver.TCPServer(("", PORT), Handler)
 logger.info("serving at port"+str(PORT))
