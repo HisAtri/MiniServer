@@ -7,7 +7,7 @@ def handle_request(handler):
     <html lang="zh-CN">
     <head>
         <meta charset="UTF-8">
-        <title>404 No Found</title>
+        <title>500 Internal Server Error</title>
         <meta name="description" content="使用Python搭建的多种API接口，">
         <meta name="author" content="HisAtri">
         <style type="text/css">
@@ -37,8 +37,8 @@ def handle_request(handler):
     <body>
         <div class="container">
             <h1>The MiniServer</h1>
-            <h1>404 Not Found</h1>
-            <p>The requested URL was not found on this server.</p>
+            <h1>500 Internal Server Error</h1>
+            <p>Sorry, something went wrong on our end.</p>
             <button onclick="window.location.href='/'">Go Back to Homepage</button>
         </div>
     </body>

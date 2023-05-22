@@ -1,5 +1,10 @@
+from config_global import config_global
+from def_global import remove_first_path, page404
+
+
+
 def handler_request(handler):
-    conntype = "Text"
+    conntype = "Text"   # Text or DB
     if conntype == "Text":
         import os
         import random

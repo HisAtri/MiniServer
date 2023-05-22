@@ -152,7 +152,7 @@ def get_client_ip(self):
     return client_ip
 
 def handle_request(self):
-    print(remove_first_path(self.path))
+    # print(remove_first_path(self.path))
     if remove_first_path(self.path) == '/':
         # 获取访问者的IP
         try:
