@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Responsive List</title>
+    <meta name="description" content="使用Python搭建的多种API接口，">
+    <meta name="author" content="HisAtri">
+    <style type="text/css">
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* 隐藏链接下划线 */
+        ul li a {
+            text-decoration: none;
+            color: #2c2a33;
+            display: block;
+            padding: 10px;
+        }
+
+        /* 圆角边框样式 */
+        ul li {
+            border: 3px solid #FF9933;
+            background-color: #F2CDAC;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 0;
+            margin-bottom: 10px;
+            margin-right: 2px;
+            display: block; /* 将 display 属性设置为 block */
+            box-sizing: border-box; /* 让 padding 和 border 不会撑开元素 */
+        }
+
+        /* 鼠标悬停时的样式 */
+        ul li:hover {
+        background-color: #FF6600; /* 深橙色背景 */
+        }
+
+        /* 响应式布局 */
+        @media (min-width: 768px) {
+            /* 电脑屏幕上以两栏显示 */
+            ul {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            ul li {
+                width: 49%;
+            }
+        }
+
+        @media (min-width: 992px) {
+            /* 电脑屏幕上以三栏显示 */
+            ul li {
+                width: 33%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="color: #2c2a33;">
+            <h1>Title MiniServer</h1>
+        </div>
+        <div>
+            <ul>
+                <li><a href="/imgapi">图片API</a></li>
+                <li><a href="#">Link 2</a></li>
+                <li><a href="#">Link 3</a></li>
+                <li><a href="#">Link 4</a></li>
+                <li><a href="#">Link 5</a></li>
+                <li><a href="#">Link 6</a></li>
+                <li><a href="#">Link 7</a></li>
+                <li><a href="#">Link 8</a></li>
+                <li><a href="#">Link 9</a></li>
+                <li><a href="#">Link 10</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+<footer class="container">
+    <p>&copy; 2023 H.A. All rights reserved.</p>
+    <a href="https://github.com/hisatri" target="_blank">Github MiniServer</a>
+</footer>
+</html>

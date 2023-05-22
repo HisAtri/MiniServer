@@ -29,7 +29,7 @@ def get_first_path(path):
     for component in path_components:
         if component != '':
             return component
-    return ''
+    return '/'
 
 def page404(self):
     import importlib

@@ -19,6 +19,8 @@ console_handler.setFormatter(formatter)
 file_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
+with open("index.html", 'rb') as file:
+        content = file.read()
 
 class MyHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
@@ -28,6 +30,9 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         plugin_name = get_first_path(path)
         # 导入对应的插件模块并处理请求
         try:
+            if plugin_name == '/':
+                plugin_module = __import__('plugins')
+                plugin_module.handle_request(self,content)
             plugin_module = __import__('plugins.' + plugin_name, fromlist=['*'])
             plugin_module.handle_request(self)
         except ModuleNotFoundError:
@@ -39,5 +44,5 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
 PORT = config_global.server["port"]
 Handler = MyHandler
 httpd = socketserver.TCPServer(("", PORT), Handler)
-logger.info("serving at port"+str(PORT))
+logger.info("serving at 127.0.0.1:"+str(PORT))
 httpd.serve_forever()
