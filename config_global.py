@@ -9,4 +9,5 @@ config_global = {
 }
 server={
     "port":8181,
+    "host":"", #e.g. 
 }

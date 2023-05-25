@@ -8,13 +8,13 @@ def remove_first_path(path):
         path += "/"
 
     first, _, rest = path.lstrip("/").partition("/")
-    pathstr = os.path.normpath(os.path.join("/", rest))
+    pathstr = os.path.normpath(os.path.join("/", rest)).replace('\\', '/')
 
     if pathstr == "/":
         return pathstr
 
     if first:
-        pathstr = os.path.join("/", pathstr.lstrip(first).lstrip(os.sep))
+        pathstr = os.path.join("/", pathstr.lstrip(first).lstrip(os.sep)).replace('\\', '/')
 
     return pathstr
 
@@ -35,3 +35,13 @@ def page404(self):
     import importlib
     mod404 = importlib.import_module("404")
     mod404.handle_request(self)
+
+def page500(self):
+    import importlib
+    mod404 = importlib.import_module("500")
+    mod404.handle_request(self)
+
+def page301(self, host):
+    self.send_response(301)
+    self.send_header('Location', "http://" + host)
+    self.end_headers()

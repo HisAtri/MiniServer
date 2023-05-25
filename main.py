@@ -5,9 +5,10 @@ import socketserver
 import http.client
 import logging
 
-from def_global import get_first_path
+from def_global import get_first_path, page301
 import config_global
 
+host = config_global.server["host"]
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 console_handler = logging.StreamHandler()
@@ -22,6 +23,7 @@ logger.addHandler(file_handler)
 with open("index.html", 'rb') as file:
         content = file.read()
 
+
 class MyHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         # 获取请求路径
@@ -30,6 +32,9 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         plugin_name = get_first_path(path)
         # 导入对应的插件模块并处理请求
         try:
+            truehost = self.headers.get('host')
+            if ((truehost != host) & (host != "")):
+                page301(self, host)
             if plugin_name == '/':
                 plugin_module = __import__('plugins')
                 plugin_module.handle_request(self,content)

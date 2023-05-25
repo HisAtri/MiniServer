@@ -1,4 +1,4 @@
-def handler_request(handler):
+def handle_request(handler):
     handler.send_response(200)
     handler.send_header('Content-type', 'text/plain')
     handler.end_headers()
