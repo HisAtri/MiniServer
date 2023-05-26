@@ -5,11 +5,10 @@ import json
 from def_global import remove_first_path, page404, page500
 
 
-tz = pytz.timezone('Asia/Shanghai')
-d_time = datetime.now(tz)
-local_time = d_time.strftime('%Y-%m-%d %H:%M:%S.%f%z')
-
 def handle_request(handler):
+    tz = pytz.timezone('Asia/Shanghai')
+    d_time = datetime.now(tz)
+    local_time = d_time.strftime('%Y-%m-%d %H:%M:%S.%f%z')
     pathreq = remove_first_path(handler.path)
     if pathreq == '/':
         timencode = local_time.encode()
