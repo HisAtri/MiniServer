@@ -1,6 +1,6 @@
 config_global = {
     "database":{
-        "host":"localhost",
+        "host":"",
         "port":3306,
         "dbname":"miniserver",
         "user":"miniserver",
