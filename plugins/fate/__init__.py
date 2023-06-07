@@ -11,6 +11,8 @@ from def_global import remove_first_path
 rootdir = os.path.dirname(os.path.abspath(__file__))
 image_dir = os.path.join(rootdir, "image")
 jpg_img = [filename for filename in os.listdir(image_dir) if filename.endswith('.jpg')]
+font_path = os.path.join(rootdir, "font/font.ttf")
+print (font_path)
 
 def getext():
     fatext = random.choice(["大\n\n吉","中\n\n吉","小\n\n吉","末\n\n吉",])
@@ -23,11 +25,12 @@ def getext():
 
 
 def getimg():
+    
     random_img = random.choice(jpg_img)
     image_path = os.path.join(image_dir, random_img)
     img = Image.open(image_path)
     # 图片上添加文字
-    font = ImageFont.truetype("simhei.ttf", size=84)
+    font = ImageFont.truetype(font_path, size=84)
     text = "今日运势"
     img_draw = ImageDraw.Draw(img)
     # 文字描边
@@ -44,7 +47,7 @@ def getimg():
     img_draw.text((x, y), text, fill=(0, 0, 0), font=font)
 
     text = getext()
-    font = ImageFont.truetype("simhei.ttf", size=108)
+    font = ImageFont.truetype(font_path, size=108)
     # 文字描边
     bbox = img_draw.textbbox((0, 0), text[0], font=font)
     w, h = bbox[2] - bbox[0], bbox[3] - bbox[1]
@@ -56,7 +59,7 @@ def getimg():
             img_draw.text((x + xo, y + yo), text[0], fill=outline_color, font=font)
     img_draw.text((x, y), text[0], fill=(255, 0, 0), font=font)
 
-    font = ImageFont.truetype("simhei.ttf", size=54)
+    font = ImageFont.truetype(font_path, size=54)
     # 文字描边
     bbox = img_draw.textbbox((0, 0), text[1], font=font)
     w, h = bbox[2] - bbox[0], bbox[3] - bbox[1]
