@@ -144,11 +144,11 @@ def imgfun(ip_address, os, browser, ):
 
 def get_client_ip(self):
     # 检查是否为Cloudflare
-    cf = self.header.get('cf-connecting-ip')
+    cf = self.headers.get('cf-connecting-ip')
     if cf:
         ip_list = cf.split(',')
         client_ip = ip_list[0]
-        country = self.header.get('cf-ipcountry')
+        country = self.headers.get('cf-ipcountry')
         if country:
             return get_country_name(country)
         else:
