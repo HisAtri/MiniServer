@@ -2,6 +2,7 @@ import re
 import os
 
 import pytz
+import pycountry
 from user_agents import parse
 from io import BytesIO
 from PIL import Image
@@ -53,6 +54,16 @@ font_path = os.path.join(rootdir, config["font"])
 # 加载图片对象
 imgopen = Image.open(image_path)
 
+# 国家代码转换为国家名
+def get_country_name(code):
+    try:
+        country = pycountry.countries.get(alpha_2=code.upper())
+        if country:
+            return country.name
+    except LookupError:
+        pass
+    
+    return None
 
 def gettimestr():
     now = datetime.now(pytz.timezone(timezone))
@@ -132,39 +143,33 @@ def imgfun(ip_address, os, browser, ):
 
 
 def get_client_ip(self):
-    header_order = [
-        'x-forwarded-for',
-        'x-real-ip',
-        'x-forwarded',
-        'forwarded-for',
-        'forwarded',
-        'true-client-ip',
-        'client-ip',
-        'ali-cdn-real-ip',
-        'cdn-src-ip',
-        'cdn-real-ip',
-        'cf-connecting-ip',
-        'x-cluster-client-ip',
-        'wl-proxy-client-ip',
-        'proxy-client-ip',
-        'true-client-ip']
-    for header in header_order:
-        ip_header = self.headers.get(header)
-        if ip_header:
-            ip_list = ip_header.split(',')
-            client_ip = ip_list[-1].strip()
-            
-            # 处理IPV6
-            if ':' in client_ip:
-                client_ip = str(client_ip[0])
-                
-                if client_ip.startswith('[') and ']' in client_ip:
-                    client_ip = client_ip.split(']')[0] + ']'
-                    
+    # 检查是否为Cloudflare
+    cf = self.header.get('cf-connecting-ip')
+    if cf:
+        ip_list = cf.split(',')
+        client_ip = ip_list[0]
+        country = self.header.get('cf-ipcountry')
+        if country:
+            return get_country_name(country)
+        else:
             return client_ip
-    
-    # 如果没有找到任何头部中的IP信息，则使用客户端连接的IP
-    client_ip = self.client_address[0]
+    # 检查X-Forwarded-For获取客户端IP
+    xff_header = self.headers.get('X-Forwarded-For')
+    if xff_header:
+        # 找到第一个地址为客户端真实IP
+        ip_list = xff_header.split(',')
+        client_ip = ip_list[0]
+    else:
+        # 如果XFF头部不存在，则使用客户端连接的IP
+        client_ip = self.client_address[0]
+    if ':' in client_ip:
+        # 将IPv6地址对象转换为字符串
+        client_ip = str(client_ip[0])
+
+        # 去除IPv6地址中的端口信息
+        if client_ip.startswith('[') and ']' in client_ip:
+            client_ip = client_ip.split(']')[0] + ']'
+
     return client_ip
 
 def handle_request(self):
