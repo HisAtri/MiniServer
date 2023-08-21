@@ -132,23 +132,39 @@ def imgfun(ip_address, os, browser, ):
 
 
 def get_client_ip(self):
-    # 检查X-Forwarded-For获取客户端IP
-    xff_header = self.headers.get('X-Forwarded-For')
-    if xff_header:
-        # 找到最后一个地址为客户端真实IP
-        ip_list = xff_header.split(',')
-        client_ip = ip_list[-1].strip()
-    else:
-        # 如果XFF头部不存在，则使用客户端连接的IP
-        client_ip = self.client_address[0]
-    if ':' in client_ip:
-        # 将IPv6地址对象转换为字符串
-        client_ip = str(client_ip[0])
-
-        # 去除IPv6地址中的端口信息
-        if client_ip.startswith('[') and ']' in client_ip:
-            client_ip = client_ip.split(']')[0] + ']'
-
+    header_order = [
+        'x-forwarded-for',
+        'x-real-ip',
+        'x-forwarded',
+        'forwarded-for',
+        'forwarded',
+        'true-client-ip',
+        'client-ip',
+        'ali-cdn-real-ip',
+        'cdn-src-ip',
+        'cdn-real-ip',
+        'cf-connecting-ip',
+        'x-cluster-client-ip',
+        'wl-proxy-client-ip',
+        'proxy-client-ip',
+        'true-client-ip']
+    for header in header_order:
+        ip_header = self.headers.get(header)
+        if ip_header:
+            ip_list = ip_header.split(',')
+            client_ip = ip_list[-1].strip()
+            
+            # 处理IPV6
+            if ':' in client_ip:
+                client_ip = str(client_ip[0])
+                
+                if client_ip.startswith('[') and ']' in client_ip:
+                    client_ip = client_ip.split(']')[0] + ']'
+                    
+            return client_ip
+    
+    # 如果没有找到任何头部中的IP信息，则使用客户端连接的IP
+    client_ip = self.client_address[0]
     return client_ip
 
 def handle_request(self):
